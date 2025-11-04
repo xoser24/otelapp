@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { FaBroom, FaClipboardList, FaCalendarCheck, FaSignOutAlt } from 'react-icons/fa';
 import Logo from '../components/Logo';
+import MobileBottomNav from '../components/MobileBottomNav';
 
 const HousekeepingLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -17,7 +18,7 @@ const HousekeepingLayout: React.FC = () => {
   return (
     <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 animate-fade-in">
       {/* Sidebar */}
-      <div className={`backdrop-blur-xl bg-white/10 border-r border-white/20 text-white ${sidebarOpen ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out`}>
+      <div className={`hidden md:block backdrop-blur-xl bg-white/10 border-r border-white/20 text-white ${sidebarOpen ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out`}>
         <div className="p-4 flex items-center justify-between">
           {sidebarOpen && (
             <div className="flex items-center">
@@ -91,9 +92,19 @@ const HousekeepingLayout: React.FC = () => {
         </header>
         
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-transparent">
+        <main className="flex-1 overflow-auto bg-transparent pb-16 md:pb-0">
           <Outlet />
         </main>
+
+        {/* Mobile Bottom Navigation */}
+        <MobileBottomNav
+          items={[
+            { path: '/housekeeping', icon: <FaBroom />, title: 'Dashboard' },
+            { path: '/housekeeping/rooms', icon: <FaCalendarCheck />, title: 'Odalar' },
+            { path: '/housekeeping/materials', icon: <FaClipboardList />, title: 'Malzemeler' },
+            { path: '/housekeeping/lost-and-found', icon: <FaClipboardList />, title: 'Unutulan' },
+          ]}
+        />
       </div>
     </div>
   );

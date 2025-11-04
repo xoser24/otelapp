@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import MobileBottomNav from '../components/MobileBottomNav';
 import { FaTachometerAlt, FaBed, FaUsers, FaChartBar, FaCog, FaBell, FaSignOutAlt, FaSuitcase, FaComments, FaChartLine, FaCalendarCheck, FaLeaf, FaClock } from 'react-icons/fa';
 // Logo kaldırıldı: yalnızca login ekranında görsel kullanılacak
 
@@ -104,7 +105,7 @@ const AdminLayout: React.FC = () => {
   return (
     <div className="flex h-screen bg-gradient-to-b from-[#0c0c0f] via-[#0a0a0d] to-[#0c0c0f] bg-gold-glass animate-fade-in">
       {/* Sidebar */}
-      <div className={`gold-glass-surface border-r border-amber-400/25 text-white ${sidebarOpen ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out`}>
+      <div className={`hidden md:block gold-glass-surface border-r border-amber-400/25 text-white ${sidebarOpen ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out`}>
         <div className="p-4 flex items-center justify-between">
           {sidebarOpen && (
             <div className="flex items-center">
@@ -191,9 +192,20 @@ const AdminLayout: React.FC = () => {
         </header>
         
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-transparent">
+        <main className="flex-1 overflow-auto bg-transparent pb-16 md:pb-0">
           <Outlet />
         </main>
+
+        {/* Mobile Bottom Navigation */}
+        <MobileBottomNav
+          items={[
+            { path: '/admin', icon: <FaTachometerAlt />, title: 'Dashboard' },
+            { path: '/admin/rooms', icon: <FaBed />, title: 'Odalar' },
+            { path: '/admin/reservations', icon: <FaCalendarCheck />, title: 'Rezervasyon' },
+            { path: '/admin/guests', icon: <FaUsers />, title: 'Misafirler' },
+            { path: '/admin/notifications', icon: <FaBell />, title: 'Bildirimler' },
+          ]}
+        />
 
         {/* Global Chat Alert Overlay */}
         {chatAlert && (

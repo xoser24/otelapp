@@ -249,6 +249,27 @@ code {
   color: #111827; /* text-gray-900 */
   outline: none;
 }
+
+/* Mobile bottom nav styling */
+.mobile-bottom-nav {
+  background: rgba(20, 20, 20, 0.75);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 8px;
+}
+.mobile-bottom-nav a {
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.mobile-bottom-nav a:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Extra mobile tweaks */
+@media (max-width: 768px) {
+  .band-title { font-size: 1rem; }
+  .premium-card { border-radius: 1rem; }
+  .diamond-row, .diamond-table-head { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 .form-base::placeholder {
   color: #9ca3af; /* text-gray-400 */
 }

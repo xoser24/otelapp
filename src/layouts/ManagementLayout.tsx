@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { FaChartLine, FaMoneyBillWave, FaUsers, FaSignOutAlt, FaFileAlt, FaStar } from 'react-icons/fa';
 // Logo kaldırıldı: yalnızca login ekranında görsel kullanılacak
+import MobileBottomNav from '../components/MobileBottomNav';
 
 const ManagementLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -18,7 +19,7 @@ const ManagementLayout: React.FC = () => {
   return (
     <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 animate-fade-in">
       {/* Sidebar */}
-      <div className={`backdrop-blur-xl bg-white/10 border-r border-white/20 text-white ${sidebarOpen ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out`}>
+      <div className={`hidden md:block backdrop-blur-xl bg-white/10 border-r border-white/20 text-white ${sidebarOpen ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out`}>
         <div className="p-4 flex items-center justify-between">
           {sidebarOpen && (
             <div className="flex items-center">
@@ -94,9 +95,19 @@ const ManagementLayout: React.FC = () => {
         </header>
         
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-transparent">
+        <main className="flex-1 overflow-auto bg-transparent pb-16 md:pb-0">
           <Outlet />
         </main>
+
+        {/* Mobile Bottom Navigation */}
+        <MobileBottomNav
+          items={[
+            { path: '/management', icon: <FaChartLine />, title: 'Dashboard' },
+            { path: '/management/finance', icon: <FaMoneyBillWave />, title: 'Finans' },
+            { path: '/management/reports', icon: <FaFileAlt />, title: 'Raporlar' },
+            { path: '/management/staff', icon: <FaUsers />, title: 'Personel' },
+          ]}
+        />
       </div>
     </div>
   );
