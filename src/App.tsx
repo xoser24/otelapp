@@ -40,7 +40,7 @@ import RoomQRCodes from './pages/RoomQRCodes';
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         {/* Misafir Portalı Rotaları */}
         <Route path="/portal" element={<GuestLayout />}>
