@@ -17,6 +17,24 @@
     <title>Otel Yönetim Sistemi</title>
   </head>
   <body>
+    <script>
+      // GitHub Pages SPA fallback'ından gelen p parametresi varsa gerçek URL'yi geri yükle
+      (function() {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var p = params.get('p');
+          if (p) {
+            params.delete('p');
+            var baseParts = window.location.pathname.split('/');
+            // index.html'in bulunduğu dizin
+            var basePath = baseParts.slice(0, baseParts.length - 1).join('/');
+            if (!basePath.endsWith('/')) basePath += '/';
+            var newUrl = basePath + decodeURIComponent(p) + (params.toString() ? ('?' + params.toString()) : '') + window.location.hash;
+            window.history.replaceState(null, null, newUrl);
+          }
+        } catch (e) { /* sessizce geç */ }
+      })();
+    </script>
     <noscript>Bu uygulamayı çalıştırmak için JavaScript'i etkinleştirmeniz gerekiyor.</noscript>
     <div id="root"></div>
   </body>

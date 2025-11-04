@@ -4,11 +4,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Yükleniyor...</title>
-    <!-- GitHub Pages için SPA fallback: derin URL'ler index.html'e yönlendirilir -->
-    <meta http-equiv="refresh" content="0; url=./index.html" />
+    <!-- GitHub Pages için SPA fallback: derin URL ve query korunur -->
     <style>
       body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; padding: 2rem; color: #333; }
     </style>
+    <script>
+      (function() {
+        // Mevcut path ve query/hash bilgisini koruyarak index.html'e yönlendir
+        var currentPath = window.location.pathname;
+        var pathParts = currentPath.split('/');
+        // index.html'in bulunduğu dizin (repo kökü)
+        var basePath = pathParts.slice(0, pathParts.length - 1).join('/');
+        if (!basePath.endsWith('/')) basePath += '/';
+        var p = encodeURIComponent(pathParts.slice(pathParts.length - 1).join('/'));
+        var search = window.location.search ? window.location.search.replace('?', '&') : '';
+        var hash = window.location.hash || '';
+        var target = basePath + 'index.html' + '?p=' + p + search + hash;
+        window.location.replace(target);
+      })();
+    </script>
   </head>
   <body>
     <p>Uygulama yükleniyor… Eğer otomatik yönlendirme olmazsa <a href="./index.html">buraya tıklayın</a>.</p>

@@ -48,6 +48,65 @@ code {
 .premium-card { @apply rounded-2xl bg-white shadow border overflow-hidden text-gray-800; }
 .premium-card-pad { @apply p-6; }
 
+/* PWA Mobile Optimizations */
+@media (max-width: 768px) {
+  /* Prevent zoom on input focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Better touch targets */
+  button, .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improved spacing for mobile */
+  .premium-card-pad {
+    @apply p-4;
+  }
+  
+  /* Mobile-friendly modals */
+  .modal-content {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+}
+
+/* PWA Status Bar Styling */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Hide browser UI elements when in PWA mode */
+  .browser-only {
+    display: none;
+  }
+}
+
+/* Touch-friendly scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 215, 0, 0.5);
+}
+
 .section-band { @apply px-6 py-3 text-white flex items-center justify-between; }
 .section-band-indigo { @apply bg-gradient-to-r from-secondary-700 via-secondary-600 to-primary-700; }
 /* Tüm section band renklerini tek marka temasında birleştir */
