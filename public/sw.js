@@ -1,12 +1,12 @@
-const CACHE_NAME = 'otel-yonetim-v1';
+const CACHE_NAME = 'otel-yonetim-v2';
+// GitHub Pages alt dizinlerinde doğru çalışması için relatif yollar kullan
 const urlsToCache = [
-  '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  '/manifest.json',
-  '/favicon.ico',
-  '/logo192.png',
-  '/logo512.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './favicon.ico',
+  './logo192.png',
+  './logo512.png',
 ];
 
 // Install event - cache resources
@@ -37,7 +37,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() => {
         // If both cache and network fail, return offline page for navigation requests
         if (event.request.destination === 'document') {
-          return caches.match('/');
+          return caches.match('./index.html');
         }
       })
   );
