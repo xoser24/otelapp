@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Inter', 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Gold Glass global base */
+  background-color: #121212; /* Antrasit */
+  color: #F3F3F3; /* Birincil yazı */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Admin UI subtle animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 240ms ease-out both;
+}
+
+.animate-fade-in-delayed {
+  animation: fadeIn 360ms ease-out both;
+}
+
+/* Centered modal pop-in animation */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.98) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-pop-in {
+  animation: popIn 220ms ease-out both;
+}
+
+/* Premium utility classes */
+.premium-card { @apply rounded-2xl bg-white shadow border overflow-hidden text-gray-800; }
+.premium-card-pad { @apply p-6; }
+
+.section-band { @apply px-6 py-3 text-white flex items-center justify-between; }
+.section-band-indigo { @apply bg-gradient-to-r from-secondary-700 via-secondary-600 to-primary-700; }
+/* Tüm section band renklerini tek marka temasında birleştir */
+.section-band-secondary { @apply bg-gradient-to-r from-secondary-700 via-secondary-600 to-primary-700; }
+.section-band-teal { @apply bg-gradient-to-r from-secondary-700 via-secondary-600 to-primary-700; }
+.section-band-rose { @apply bg-gradient-to-r from-secondary-700 via-secondary-600 to-primary-700; }
+.section-band-sky { @apply bg-gradient-to-r from-secondary-700 via-secondary-600 to-primary-700; }
+.section-band-violet { @apply bg-gradient-to-r from-secondary-700 via-secondary-600 to-primary-700; }
+
+.icon-badge { @apply inline-flex p-1.5 rounded-full bg-white/20; }
+.band-title { @apply text-lg font-semibold; }
+.band-counter { @apply text-xs opacity-80; }
+
+@keyframes floatY { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-2px);} }
+.animate-band-icon { animation: floatY 2.2s ease-in-out infinite; }
+
+.hover-tilt { transition: transform .2s ease; }
+.hover-tilt:hover { transform: rotate(2deg) scale(1.02); }
+
+.btn-premium { @apply inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-white bg-primary-600 hover:bg-primary-700 transition; }
+.btn-outline { @apply inline-flex items-center gap-2 rounded-lg px-3 py-1.5 border border-black/10 bg-white text-gray-800 hover:bg-gray-50 transition; }
+
+/* Soft pulse for status label emphasis */
+@keyframes pulseSoft { 0%,100%{ opacity:1; transform: translateY(0);} 50%{ opacity:.9; transform: translateY(-1px);} }
+.pulse-soft { animation: pulseSoft 600ms ease-out 1; will-change: opacity, transform; }
+
+/* Stronger, status-based animations for room cards */
+@keyframes pulseStrong { 0%{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.0);} 50%{ transform: scale(1.02); box-shadow: 0 10px 30px rgba(255,255,255,0.15);} 100%{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.0);} }
+.pulse-strong { animation: pulseStrong 1200ms ease-in-out infinite; }
+
+@keyframes glowAmber { 0%,100%{ box-shadow: 0 0 0 0 rgba(245,158,11,0.0);} 50%{ box-shadow: 0 0 24px rgba(245,158,11,0.35);} }
+.glow-amber { box-shadow: 0 0 14px rgba(245,158,11,0.18); animation: glowAmber 1600ms ease-in-out infinite; }
+
+@keyframes glowRose { 0%,100%{ box-shadow: 0 0 0 0 rgba(244,63,94,0.0);} 50%{ box-shadow: 0 0 24px rgba(244,63,94,0.35);} }
+.glow-rose { box-shadow: 0 0 14px rgba(244,63,94,0.18); animation: glowRose 1600ms ease-in-out infinite; }
+
+@keyframes glowEmerald { 0%,100%{ box-shadow: 0 0 0 0 rgba(16,185,129,0.0);} 50%{ box-shadow: 0 0 24px rgba(16,185,129,0.35);} }
+.glow-emerald { box-shadow: 0 0 14px rgba(16,185,129,0.18); animation: glowEmerald 1600ms ease-in-out infinite; }
+
+@keyframes glowSky { 0%,100%{ box-shadow: 0 0 0 0 rgba(14,165,233,0.0);} 50%{ box-shadow: 0 0 24px rgba(14,165,233,0.35);} }
+.glow-sky { box-shadow: 0 0 14px rgba(14,165,233,0.18); animation: glowSky 1600ms ease-in-out infinite; }
+
+@keyframes wiggleSoft { 0%,100%{ transform: rotate(0deg);} 25%{ transform: rotate(0.6deg);} 75%{ transform: rotate(-0.6deg);} }
+.wiggle-soft { animation: wiggleSoft 1400ms ease-in-out infinite; }
+
+/* Gold Glass helpers */
+.glass-surface {
+  background: rgba(20,20,20,0.65);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.gold-glow {
+  box-shadow: 0 0 20px rgba(255,215,0,0.15);
+}
+.text-secondary { color: #B0B0B0; }
+.text-primary-gg { color: #F3F3F3; }
+.accent-gold { color: #E3B341; }
+.bg-gold-gradient { background-image: linear-gradient(90deg, #FFD95A, #D4AF37); }
+
+/* Minor typography tweak per spec */
+.heading-premium { letter-spacing: 0.5px; font-weight: 600; }
+
+:root {
+  --gold-base: #f59e0b;
+  --gold-light: #fbbf24;
+  --gold-dark: #b45309;
+  --gold-ring: rgba(245, 158, 11, 0.5);
+  --gold-glow: rgba(245, 158, 11, 0.15);
+
+  --glass-surface: rgba(255,255,255,0.06);
+  --glass-surface-strong: rgba(255,255,255,0.10);
+  --text-primary: #f5efe3;
+  --text-secondary: rgba(255,255,255,0.75);
+}
+.gold-thin-line {
+  background-image: linear-gradient(to right, var(--gold-light), #fde68a, var(--gold-base));
+  height: 1px;
+  width: 100%;
+  opacity: 0.7;
+}
+.gold-border-glow {
+  box-shadow:
+    0 0 0 1px var(--gold-ring),
+    0 10px 30px var(--gold-glow);
+}
+.gold-glass-surface {
+  background-image: radial-gradient(ellipse at top left, rgba(255,255,255,0.08), transparent 60%);
+  background-color: var(--glass-surface);
+  backdrop-filter: blur(8px);
+}
+.gold-card-hover {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.gold-card-hover:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 40px var(--gold-glow);
+}
+
+/* Global backdrop blur utility used across dark glass sections */
+.backdrop-blur-glass {
+  backdrop-filter: blur(12px) saturate(110%);
+}
+
+/* Shimmer animasyonu: gradient arka planın yumuşak akışı */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Diamond Theme Utilities (Dark variant) */
+.diamond-band { @apply section-band bg-gradient-to-r from-indigo-900 via-cyan-800 to-blue-900; }
+.diamond-card { @apply rounded-2xl gold-glass-surface gold-border-glow text-white; }
+.btn-diamond { @apply inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-white bg-gradient-to-r from-indigo-800 via-cyan-800 to-blue-800 hover:from-indigo-900 hover:via-cyan-900 hover:to-blue-900 transition; }
+.diamond-row { @apply grid grid-cols-7 items-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10; }
+.diamond-table-head { @apply grid grid-cols-7 text-xs uppercase tracking-wide text-white/80 px-3 pb-2; }
+.diamond-pill { @apply inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-white/10 text-white border border-white/20; }
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 1.8s linear infinite;
+}
+
+/* Sparkline draw animation */
+@keyframes spark-draw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+.spark-animated path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: spark-draw 1.2s ease-out forwards;
+}
+
+/* Global form base for inputs/selects on light backgrounds */
+.form-base {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb; /* gray-200 */
+  border-radius: 0.5rem; /* rounded-lg */
+  padding: 0.5rem 0.75rem; /* px-3 py-2 */
+  font-size: 0.875rem; /* text-sm */
+  color: #111827; /* text-gray-900 */
+  outline: none;
+}
+.form-base::placeholder {
+  color: #9ca3af; /* text-gray-400 */
+}
+.form-base:focus {
+  border-color: #93c5fd; /* blue-300-ish */
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15); /* secondary ring */
+}
+
+/* Badge utilities for consistent status labels */
+.badge { display: inline-block; border-radius: 0.5rem; font-size: 0.75rem; padding: 2px 8px; font-weight: 600; }
+.badge-blue { background-color: #2563eb; color: #ffffff; }
+.badge-yellow { background-color: #ca8a04; color: #ffffff; }
+.badge-green { background-color: #16a34a; color: #ffffff; }
+.badge-red { background-color: #dc2626; color: #ffffff; }

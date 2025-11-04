@@ -1,0 +1,233 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Kullanıcı modeli (personel, yönetici)
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  role          UserRole
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  notifications Notification[]
+  tasks         HousekeepingTask[]
+}
+
+enum UserRole {
+  ADMIN
+  RECEPTION
+  HOUSEKEEPING
+}
+
+// Oda modeli
+model Room {
+  id              String    @id @default(uuid())
+  number          String    @unique
+  type            RoomType
+  status          RoomStatus @default(AVAILABLE)
+  floor           Int
+  cleaningStatus  CleaningStatus @default(CLEAN)
+  lastCleaned     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  bookings        Booking[]
+  cleaningTasks   HousekeepingTask[]
+  maintenanceTasks MaintenanceTask[]
+}
+
+enum RoomType {
+  SINGLE
+  DOUBLE
+  SUITE
+  DELUXE
+}
+
+enum RoomStatus {
+  AVAILABLE
+  OCCUPIED
+  MAINTENANCE
+  OUT_OF_SERVICE
+}
+
+enum CleaningStatus {
+  CLEAN
+  DIRTY
+  CLEANING_IN_PROGRESS
+  NEEDS_INSPECTION
+}
+
+// Misafir modeli
+model Guest {
+  id            String    @id @default(uuid())
+  name          String
+  email         String?
+  phone         String?
+  nationality   String?
+  language      String?   @default("tr")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  bookings      Booking[]
+  feedbacks     Feedback[]
+  chatMessages  ChatMessage[]
+}
+
+// Rezervasyon modeli
+model Booking {
+  id            String    @id @default(uuid())
+  roomId        String
+  guestId       String
+  checkIn       DateTime
+  checkOut      DateTime
+  status        BookingStatus @default(CONFIRMED)
+  cleaningOptOut Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  room          Room      @relation(fields: [roomId], references: [id])
+  guest         Guest     @relation(fields: [guestId], references: [id])
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+}
+
+// Housekeeping görev modeli
+model HousekeepingTask {
+  id            String    @id @default(uuid())
+  roomId        String
+  assignedToId  String?
+  status        TaskStatus @default(PENDING)
+  priority      TaskPriority @default(MEDIUM)
+  description   String?
+  startTime     DateTime?
+  endTime       DateTime?
+  duration      Int?      // Dakika cinsinden süre
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  room          Room      @relation(fields: [roomId], references: [id])
+  assignedTo    User?     @relation(fields: [assignedToId], references: [id])
+}
+
+// Bakım görev modeli
+model MaintenanceTask {
+  id            String    @id @default(uuid())
+  roomId        String
+  status        TaskStatus @default(PENDING)
+  priority      TaskPriority @default(MEDIUM)
+  description   String
+  reportedBy    String?
+  resolvedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  room          Room      @relation(fields: [roomId], references: [id])
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// Misafir geri bildirimi modeli
+model Feedback {
+  id            String    @id @default(uuid())
+  guestId       String
+  category      FeedbackCategory
+  rating        Int?      // 1-5 arası puanlama
+  comment       String?
+  sentiment     SentimentType?
+  createdAt     DateTime  @default(now())
+  guest         Guest     @relation(fields: [guestId], references: [id])
+}
+
+enum FeedbackCategory {
+  CLEANLINESS
+  COMFORT
+  STAFF
+  FACILITIES
+  LOCATION
+  VALUE
+  OVERALL
+}
+
+enum SentimentType {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+// Sohbet mesajı modeli
+model ChatMessage {
+  id            String    @id @default(uuid())
+  guestId       String?
+  userId        String?
+  content       String
+  isFromGuest   Boolean
+  isTranslated  Boolean   @default(false)
+  originalContent String?
+  originalLanguage String?
+  translatedLanguage String?
+  isRead        Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  guest         Guest?    @relation(fields: [guestId], references: [id])
+}
+
+// Bildirim modeli
+model Notification {
+  id            String    @id @default(uuid())
+  userId        String
+  title         String
+  message       String
+  type          NotificationType
+  isRead        Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  user          User      @relation(fields: [userId], references: [id])
+}
+
+enum NotificationType {
+  TASK_ASSIGNED
+  TASK_COMPLETED
+  MAINTENANCE_REQUIRED
+  GUEST_REQUEST
+  GUEST_COMPLAINT
+  CHECKOUT_REMINDER
+  SYSTEM
+}
+
+// Sürdürülebilirlik metrikleri modeli
+model SustainabilityMetric {
+  id            String    @id @default(uuid())
+  metricType    MetricType
+  value         Float
+  unit          String
+  date          DateTime
+  description   String?
+  createdAt     DateTime  @default(now())
+}
+
+enum MetricType {
+  WATER_SAVED
+  ENERGY_SAVED
+  CO2_REDUCED
+  CLEANING_PRODUCTS_SAVED
+}

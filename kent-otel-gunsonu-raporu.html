@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kent Otel - Gün Sonu Raporu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #007BFF, #0056b3);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .report-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: left;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            border-left: 5px solid #007BFF;
+        }
+
+        .section-header {
+            background: #007BFF;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .table th {
+            background: #007BFF;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .total-row {
+            background: #e3f2fd !important;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .payment-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .payment-paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .payment-unpaid {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .status-staying {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-checkout {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-waiting {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-top: 4px solid #007BFF;
+        }
+
+        .summary-card .icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007BFF;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .ai-suggestion {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #007BFF;
+            border-radius: 10px;
+            padding: 20px;
+            font-style: italic;
+            color: #495057;
+        }
+
+        .signature-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .signature-box {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #007BFF;
+        }
+
+        .footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        .highlight-profit {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        @media print {
+            body { padding: 0; }
+            .container { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">KO</div>
+            <h1>🧾 KENT OTEL — GÜN SONU RAPORU</h1>
+            <div class="report-info">
+                <div class="info-item">
+                    <span>📅</span>
+                    <div>
+                        <strong>Tarih:</strong><br>
+                        25 Ekim 2025
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span>🕒</span>
+                    <div>
+                        <strong>Hazırlanma Saati:</strong><br>
+                        23:45
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span>👤</span>
+                    <div>
+                        <strong>Hazırlayan:</strong><br>
+                        Ahmet Yılmaz
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- 1. Gelir Özeti -->
+            <div class="section">
+                <div class="section-header">
+                    <span>💰</span>
+                    <span>1️⃣ GELİR ÖZETİ</span>
+                </div>
+                <div class="section-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Gelir Kalemi</th>
+                                <th>Tutar (₺)</th>
+                                <th>Açıklama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Konaklama</td>
+                                <td>12.800</td>
+                                <td>Günlük oda satışları</td>
+                            </tr>
+                            <tr>
+                                <td>Ek Hizmetler (Minibar, Çamaşır, vb.)</td>
+                                <td>2.150</td>
+                                <td>Faturalandırılmış</td>
+                            </tr>
+                            <tr>
+                                <td>Online Rezervasyon (Booking, Expedia vb.)</td>
+                                <td>3.600</td>
+                                <td>Komisyonlar hariç</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>TOPLAM GELİR</strong></td>
+                                <td><strong>18.550 ₺</strong></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 2. Gider Özeti -->
+            <div class="section">
+                <div class="section-header">
+                    <span>💸</span>
+                    <span>2️⃣ GİDER ÖZETİ</span>
+                </div>
+                <div class="section-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Gider Kalemi</th>
+                                <th>Tutar (₺)</th>
+                                <th>Açıklama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Personel Maaş / Avans</td>
+                                <td>4.000</td>
+                                <td>Günlük ödeme</td>
+                            </tr>
+                            <tr>
+                                <td>Market / Gıda</td>
+                                <td>1.200</td>
+                                <td>Tedarik harcaması</td>
+                            </tr>
+                            <tr>
+                                <td>Teknik / Bakım</td>
+                                <td>750</td>
+                                <td>Arıza giderimi</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>TOPLAM GİDER</strong></td>
+                                <td><strong>5.950 ₺</strong></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. Kasa Durumu -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🧮</span>
+                    <span>3️⃣ KASA DURUMU</span>
+                </div>
+                <div class="section-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tür</th>
+                                <th>Tutar (₺)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nakit</td>
+                                <td>8.700</td>
+                            </tr>
+                            <tr>
+                                <td>POS (Kart)</td>
+                                <td>6.200</td>
+                            </tr>
+                            <tr>
+                                <td>Havale / EFT</td>
+                                <td>3.650</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>GENEL TOPLAM</strong></td>
+                                <td><strong>18.550 ₺</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="highlight-profit">
+                        💡 Not: Günlük gelir-gider farkı = +12.600 ₺ (Kâr)
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Misafir Durumu -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🧍‍♂️</span>
+                    <span>4️⃣ MİSAFİR DURUMU LİSTESİ</span>
+                </div>
+                <div class="section-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Oda</th>
+                                <th>Misafir Adı</th>
+                                <th>Giriş</th>
+                                <th>Çıkış</th>
+                                <th>Gün</th>
+                                <th>Günlük Ücret</th>
+                                <th>Toplam</th>
+                                <th>Ödeme Durumu</th>
+                                <th>Ödeme Türü</th>
+                                <th>Durum</th>
+                                <th>Not</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>101</td>
+                                <td>Ahmet Demir</td>
+                                <td>18.10.2025</td>
+                                <td>21.10.2025</td>
+                                <td>3</td>
+                                <td>1200</td>
+                                <td>3600</td>
+                                <td><span class="payment-status payment-paid">Alındı</span></td>
+                                <td>Nakit</td>
+                                <td><span class="status-badge status-staying">Konaklıyor</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>102</td>
+                                <td>Elif Kaya</td>
+                                <td>19.10.2025</td>
+                                <td>20.10.2025</td>
+                                <td>1</td>
+                                <td>1100</td>
+                                <td>1100</td>
+                                <td><span class="payment-status payment-unpaid">Alınmadı</span></td>
+                                <td>Kart</td>
+                                <td><span class="status-badge status-checkout">Çıkış Yaptı</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>103</td>
+                                <td>Mert Aksoy</td>
+                                <td>15.10.2025</td>
+                                <td>22.10.2025</td>
+                                <td>5</td>
+                                <td>950</td>
+                                <td>4750</td>
+                                <td><span class="payment-status payment-paid">Alındı</span></td>
+                                <td>Havale</td>
+                                <td><span class="status-badge status-staying">Konaklıyor</span></td>
+                                <td>5. Gün</td>
+                            </tr>
+                            <tr>
+                                <td>104</td>
+                                <td>Ali Korkmaz</td>
+                                <td>20.10.2025</td>
+                                <td>21.10.2025</td>
+                                <td>1</td>
+                                <td>1000</td>
+                                <td>1000</td>
+                                <td><span class="payment-status payment-paid">Alındı</span></td>
+                                <td>Nakit</td>
+                                <td><span class="status-badge status-checkout">Çıkış Yaptı</span></td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <div class="icon">🧾</div>
+                            <div class="value">2</div>
+                            <div class="label">Toplam Konaklayan</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="icon">🚪</div>
+                            <div class="value">2</div>
+                            <div class="label">Toplam Çıkış Yapan</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="icon">💵</div>
+                            <div class="value">9.450 ₺</div>
+                            <div class="label">Alınan Ödemeler</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="icon">⏳</div>
+                            <div class="value">1.100 ₺</div>
+                            <div class="label">Bekleyen Ödemeler</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Rezervasyon Durumu -->
+            <div class="section">
+                <div class="section-header">
+                    <span>📅</span>
+                    <span>5️⃣ REZERVASYON DURUMU</span>
+                </div>
+                <div class="section-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Misafir Adı</th>
+                                <th>Giriş Tarihi</th>
+                                <th>Oda</th>
+                                <th>Durum</th>
+                                <th>Not</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ayşe Turan</td>
+                                <td>22.10.2025</td>
+                                <td>105</td>
+                                <td><span class="status-badge status-confirmed">Onaylı</span></td>
+                                <td>Erken giriş talebi</td>
+                            </tr>
+                            <tr>
+                                <td>Murat Şen</td>
+                                <td>23.10.2025</td>
+                                <td>101</td>
+                                <td><span class="status-badge status-waiting">Bekliyor</span></td>
+                                <td>Havale bekleniyor</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 6. Yapay Zeka Önerisi -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🤖</span>
+                    <span>6️⃣ YAPAY ZEKA ÖNERİSİ</span>
+                </div>
+                <div class="section-content">
+                    <div class="ai-suggestion">
+                        "Bugün toplam 18.550 ₺ gelir, 5.950 ₺ gider kaydedildi. 
+                        Doluluk oranı %75. 
+                        1 oda (102) ödeme bekliyor. 
+                        Ortalama oda ücreti: 1.062 ₺. 
+                        Kâr oranı dün'e göre %6 artış gösterdi."
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Onay ve İmza -->
+            <div class="section">
+                <div class="section-header">
+                    <span>🖋️</span>
+                    <span>7️⃣ ONAY VE İMZA</span>
+                </div>
+                <div class="section-content">
+                    <div class="signature-section">
+                        <div class="signature-box">
+                            <div class="label">Hazırlayan</div>
+                        </div>
+                        <div class="signature-box">
+                            <div class="label">Yönetici Onayı</div>
+                        </div>
+                        <div class="signature-box">
+                            <div class="label">Tarih</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Kent Otel © 2025 — Gün Sonu Raporu
+        </div>
+    </div>
+</body>
+</html>
