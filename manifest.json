@@ -4,24 +4,25 @@
   "description": "Profesyonel otel yönetim ve misafir portal sistemi",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "%PUBLIC_URL%/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "%PUBLIC_URL%/logo192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "logo512.png",
+      "src": "%PUBLIC_URL%/logo512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "%PUBLIC_URL%/",
+  "scope": "%PUBLIC_URL%/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#FFD700",
