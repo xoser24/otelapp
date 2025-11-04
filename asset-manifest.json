@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "./static/css/main.13eee9bc.css",
-    "main.js": "./static/js/main.46687007.js",
-    "static/js/389.12034639.chunk.js": "./static/js/389.12034639.chunk.js",
-    "static/js/857.41ac7bd3.chunk.js": "./static/js/857.41ac7bd3.chunk.js",
-    "static/js/453.087c5d16.chunk.js": "./static/js/453.087c5d16.chunk.js",
-    "static/js/239.6766a6fd.chunk.js": "./static/js/239.6766a6fd.chunk.js",
-    "static/js/977.046aa736.chunk.js": "./static/js/977.046aa736.chunk.js",
-    "static/js/455.2e13dd31.chunk.js": "./static/js/455.2e13dd31.chunk.js",
-    "index.html": "./index.html",
-    "main.13eee9bc.css.map": "./static/css/main.13eee9bc.css.map",
-    "main.46687007.js.map": "./static/js/main.46687007.js.map",
-    "389.12034639.chunk.js.map": "./static/js/389.12034639.chunk.js.map",
-    "857.41ac7bd3.chunk.js.map": "./static/js/857.41ac7bd3.chunk.js.map",
-    "453.087c5d16.chunk.js.map": "./static/js/453.087c5d16.chunk.js.map",
-    "239.6766a6fd.chunk.js.map": "./static/js/239.6766a6fd.chunk.js.map",
-    "977.046aa736.chunk.js.map": "./static/js/977.046aa736.chunk.js.map",
-    "455.2e13dd31.chunk.js.map": "./static/js/455.2e13dd31.chunk.js.map"
+    "main.css": "/otelapp/static/css/main.13eee9bc.css",
+    "main.js": "/otelapp/static/js/main.3bf1360f.js",
+    "static/js/389.12034639.chunk.js": "/otelapp/static/js/389.12034639.chunk.js",
+    "static/js/857.41ac7bd3.chunk.js": "/otelapp/static/js/857.41ac7bd3.chunk.js",
+    "static/js/453.087c5d16.chunk.js": "/otelapp/static/js/453.087c5d16.chunk.js",
+    "static/js/239.6766a6fd.chunk.js": "/otelapp/static/js/239.6766a6fd.chunk.js",
+    "static/js/977.046aa736.chunk.js": "/otelapp/static/js/977.046aa736.chunk.js",
+    "static/js/455.2e13dd31.chunk.js": "/otelapp/static/js/455.2e13dd31.chunk.js",
+    "index.html": "/otelapp/index.html",
+    "main.13eee9bc.css.map": "/otelapp/static/css/main.13eee9bc.css.map",
+    "main.3bf1360f.js.map": "/otelapp/static/js/main.3bf1360f.js.map",
+    "389.12034639.chunk.js.map": "/otelapp/static/js/389.12034639.chunk.js.map",
+    "857.41ac7bd3.chunk.js.map": "/otelapp/static/js/857.41ac7bd3.chunk.js.map",
+    "453.087c5d16.chunk.js.map": "/otelapp/static/js/453.087c5d16.chunk.js.map",
+    "239.6766a6fd.chunk.js.map": "/otelapp/static/js/239.6766a6fd.chunk.js.map",
+    "977.046aa736.chunk.js.map": "/otelapp/static/js/977.046aa736.chunk.js.map",
+    "455.2e13dd31.chunk.js.map": "/otelapp/static/js/455.2e13dd31.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.13eee9bc.css",
-    "static/js/main.46687007.js"
+    "static/js/main.3bf1360f.js"
   ]
 }
