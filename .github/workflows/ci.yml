@@ -48,3 +48,33 @@ jobs:
         run: npm run prisma:generate
       - name: Build
         run: npm run build
+
+  deploy_render:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "RENDER_DEPLOY_HOOK_URL secret missing" && exit 1
+          fi
+          curl -X POST "$RENDER_DEPLOY_HOOK_URL"
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+  deploy_vercel:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy using Vercel Action
+        uses: amondnet/vercel-action@v25
+        with:
+          working-directory: .
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          prod: true

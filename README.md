@@ -50,6 +50,16 @@ npm start
   - Ortam değişkenleri: `DATABASE_URL`, `PORT` (4000), `CORS_ORIGIN` (Vercel domaini).
   - Sağlanan endpointler: `POST /api/rooms/:id/checkin`, `POST /api/rooms/:id/checkout`, `POST /api/rooms/:id/cleaning/start`, `POST /api/rooms/:id/cleaning/finish`.
 
+### Otomatik Deploy (GitHub Actions)
+- `main` branch’e push olduğunda önce `frontend` ve `backend` build/test çalışır; ardından deploy işler tetiklenir.
+- Gerekli GitHub Secrets:
+  - `RENDER_DEPLOY_HOOK_URL`: Render Web Service (server/) için Deploy Hook URL’si.
+  - `VERCEL_TOKEN`: Vercel kişisel erişim token.
+  - `VERCEL_ORG_ID`: Vercel organizasyon ID.
+  - `VERCEL_PROJECT_ID`: Vercel proje ID.
+- Render tarafında blueprint `render.yaml` build sırasında `prisma db push` çalıştırır; Neon Postgres şeması güncellenir.
+- Vercel tarafında `vercel.json` ile SPA yönlendirme etkin; build çıktısı `build` klasörü.
+
 ## Ortam Değişkenleri
 
 Bkz: `.env.example`
