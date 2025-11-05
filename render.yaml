@@ -6,7 +6,7 @@ services:
     plan: free
     autoDeploy: true
     healthCheckPath: /health
-    buildCommand: npm ci && npm run prisma:generate && npm run build && npx prisma db push --schema ./prisma/schema.prisma
+    buildCommand: npm ci && npm run prisma:generate && npm run build && if [ -n "$DATABASE_URL" ]; then npx prisma db push --schema ./prisma/schema.prisma; else echo "Skipping prisma db push: DATABASE_URL missing"; fi
     startCommand: npm run start
     envVars:
       - key: DATABASE_URL
