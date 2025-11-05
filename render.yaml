@@ -13,6 +13,8 @@ services:
     buildCommand: npm ci && npm run prisma:generate && npx prisma db push --schema ../prisma/schema.prisma && npm run build
     startCommand: npm run start
     envVars:
+      - key: NODE_VERSION
+        value: 18.18.0
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
@@ -28,5 +30,7 @@ staticSites:
     buildCommand: npm ci && npm run build
     publishPath: build
     envVars:
+      - key: NODE_VERSION
+        value: 18.18.0
       - key: REACT_APP_SOCKET_URL
         value: https://kent-otel-backend-auto.onrender.com
