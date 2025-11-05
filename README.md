@@ -47,7 +47,7 @@ npm start
 - **Backend (Render)**
   - Render’da `Web Service` oluşturun, root: `server/`.
   - Start komutu: `npm run start`, Build komutu: `npm run build`.
-  - Ortam değişkenleri: `DATABASE_URL`, `PORT` (4000), `CORS_ORIGIN` (Vercel domaini).
+  - Ortam değişkenleri: `DATABASE_URL`, `CORS_ORIGIN` (Frontend domaini). Render `PORT` otomatik sağlar.
   - Sağlanan endpointler: `POST /api/rooms/:id/checkin`, `POST /api/rooms/:id/checkout`, `POST /api/rooms/:id/cleaning/start`, `POST /api/rooms/:id/cleaning/finish`.
 
 ### Otomatik Deploy (GitHub Actions)
@@ -85,6 +85,36 @@ pwsh scripts/setup-github-secrets.ps1 -Repo xoser24/otelapp -UseRepoVariables \
 ## Ortam Değişkenleri
 
 Bkz: `.env.example`
+
+## Render Kurulum (Adım Adım)
+
+### 1) Veritabanı URL’sini kopyala
+- Render Postgres → `Connections` → `External Database URL` alanını komple kopyala.
+- Format: `postgresql://<username>:<password>@<hostname>:5432/<database>?sslmode=require`
+- Bu değeri aynen kullan; başına `DATABASE_URL=` ekleme.
+
+### 2) Backend (Web Service) env değişkenleri
+- Servis → `Environment` → `Edit` → ayrı satırlar halinde ekle/düzelt:
+  - `NODE_ENV` = `production`
+  - `DATABASE_URL` = (1. adımda kopyaladığın URL)
+  - `CORS_ORIGIN` = Frontend domain’in (örn. `https://otel-yonetim-frontend.onrender.com`)
+- Kaydet → `Manual Deploy` → `Deploy latest commit`.
+
+### 3) Frontend (Static Site) env
+- Frontend servisi → `Environment` → `Edit`:
+  - `REACT_APP_SOCKET_URL` = Backend public URL’in (örn. `https://kent-otel-backend.onrender.com`)
+- Kaydet ve yeniden deploy.
+
+### 4) Blueprint ile otomatik kurulum (opsiyonel)
+- Repo’daki `render.yaml` veritabanını (`kent-otel-db`) oluşturur ve backend’in `DATABASE_URL`’ini otomatik bağlar.
+- Yapman gereken iki secret:
+  - `CORS_ORIGIN` = Frontend domain
+  - `REACT_APP_SOCKET_URL` = Backend URL
+- Render’da “New + → Blueprint” ile deploy et.
+
+### 5) Doğrulama
+- Backend: `GET https://<backend-url>/health` → 200 ve `db.ok: true`.
+- Frontend: açıldığında konsolda “Socket connected” görünür; check-in/checkout olayları canlı güncellenir.
 
 ## E2E Senaryolar (Basit)
 

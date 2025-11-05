@@ -8,6 +8,8 @@ services:
     env: node
     rootDir: server
     plan: free
+    autoDeploy: true
+    healthCheckPath: /health
     buildCommand: npm ci && npm run prisma:generate && npx prisma db push --schema ../prisma/schema.prisma && npm run build
     startCommand: npm run start
     envVars:
@@ -22,6 +24,7 @@ staticSites:
   - name: otel-yonetim-frontend
     rootDir: .
     plan: free
+    autoDeploy: true
     buildCommand: npm ci && npm run build
     publishPath: build
     envVars:
