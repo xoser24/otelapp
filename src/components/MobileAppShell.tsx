@@ -1,6 +1,6 @@
 import React from 'react';
 import MobileBottomNav from './MobileBottomNav';
-import { FaDoorOpen, FaBroom, FaChartLine, FaUsers, FaCog } from 'react-icons/fa';
+import { FaDoorOpen, FaBroom, FaChartLine, FaCog, FaHeadphones } from 'react-icons/fa';
 
 type NavItem = { path: string; title: string; icon: React.ReactNode };
 type Props = {
@@ -13,7 +13,7 @@ const defaultNav: NavItem[] = [
   { path: '/rooms', title: 'Odalar', icon: <FaDoorOpen /> },
   { path: '/housekeeping/rooms', title: 'Temizlik', icon: <FaBroom /> },
   { path: '/admin', title: 'Panel', icon: <FaChartLine /> },
-  { path: '/guestlist', title: 'Misafirler', icon: <FaUsers /> },
+  { path: '/portal', title: 'Misafir Portalı', icon: <FaHeadphones /> },
   { path: '/admin/settings', title: 'Ayarlar', icon: <FaCog /> },
 ];
 

@@ -14,7 +14,15 @@ const ROOMS_KEY = 'hotel_rooms';
 const RoomQRCodes: React.FC = () => {
   const [roomNumbers, setRoomNumbers] = useState<string[]>(DEFAULT_ROOM_NUMBERS);
   const [baseUrl, setBaseUrl] = useState<string>(() => {
-    try { return window.location.origin; } catch { return 'http://localhost:3003'; }
+    try {
+      const pub = process.env.PUBLIC_URL;
+      if (pub && pub.trim()) {
+        return pub.replace(/\/+$/, ''); // son slashları temizle
+      }
+      return window.location.origin;
+    } catch {
+      return 'http://localhost:3003';
+    }
   });
 
   useEffect(() => {
@@ -32,7 +40,8 @@ const RoomQRCodes: React.FC = () => {
   }, []);
 
   const qrEntries = useMemo(() => {
-    return roomNumbers.map(n => ({ room: n, url: `${baseUrl}/portal?room=${n}` }));
+    const base = (baseUrl || '').replace(/\/+$/, '');
+    return roomNumbers.map(n => ({ room: n, url: `${base}/portal?room=${n}` }));
   }, [roomNumbers, baseUrl]);
 
   const downloadSvg = (room: string) => {
