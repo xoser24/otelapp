@@ -7,10 +7,13 @@ services:
     autoDeploy: true
     healthCheckPath: /health
     buildCommand: npm ci && npm run prisma:generate && npm run build
+    preDeployCommand: npx prisma db push --schema ./prisma/schema.prisma
     startCommand: npm run start
     envVars:
       - key: DATABASE_URL
-        value: postgresql://postgres:Postgres!2025-KentOtel@88.254.239.28:5432/kentotel
+        fromDatabase:
+          name: kent-otel-db
+          property: connectionString
       - key: PRISMA_GENERATE
         value: enabled
       - key: NODE_VERSION
@@ -19,6 +22,10 @@ services:
         value: production
       - key: CORS_ORIGIN
         value: https://xoser24.github.io/otelapp
+
+databases:
+  - name: kent-otel-db
+    plan: free
 
 staticSites:
   - name: otel-yonetim-frontend-auto
