@@ -3,12 +3,14 @@ import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { Server } from 'socket.io';
+import { PrismaClient } from '@prisma/client';
 import { RoomStatusController } from './controllers/RoomStatusController';
 
 dotenv.config();
 
 const PORT = Number(process.env.PORT || process.env.BACKEND_PORT || 4000);
 const ORIGIN = process.env.CORS_ORIGIN || process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
+const prisma = new PrismaClient();
 
 const app = express();
 app.use(express.json());
@@ -18,8 +20,18 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: ORIGIN } });
 const controller = new RoomStatusController(io);
 
-// Health
-app.get('/health', (_req, res) => res.json({ ok: true, env: { db: !!process.env.DATABASE_URL } }));
+// Health with DB ping
+app.get('/health', async (_req, res) => {
+  let dbOk = false;
+  let error: string | null = null;
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    dbOk = true;
+  } catch (e: any) {
+    error = e?.message || String(e);
+  }
+  res.json({ ok: true, env: { db: !!process.env.DATABASE_URL, origin: ORIGIN }, db: { ok: dbOk, error } });
+});
 
 // Check-in: set occupied and emit event
 app.post('/api/rooms/:id/checkin', async (req, res) => {
