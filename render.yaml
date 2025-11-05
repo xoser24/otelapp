@@ -25,12 +25,9 @@ services:
       - key: CORS_ORIGIN
         value: https://xoser24.github.io/otelapp,https://otel-yonetim-frontend-auto.onrender.com
 
-databases:
-  - name: kent-otel-db
-    plan: free
-
-staticSites:
-  - name: otel-yonetim-frontend-auto
+  - type: web
+    name: otel-yonetim-frontend-auto
+    runtime: static
     rootDir: .
     plan: free
     autoDeploy: true
@@ -41,3 +38,7 @@ staticSites:
         value: 18.18.0
       - key: REACT_APP_SOCKET_URL
         value: https://kent-otel-backend-auto.onrender.com
+
+databases:
+  - name: kent-otel-db
+    plan: free
