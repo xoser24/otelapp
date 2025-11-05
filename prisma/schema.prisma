@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -16,27 +16,21 @@ model User {
   email         String             @unique
   password      String
   name          String
-  role          UserRole
+  role          String
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
   notifications Notification[]
   tasks         HousekeepingTask[]
 }
 
-enum UserRole {
-  ADMIN
-  RECEPTION
-  HOUSEKEEPING
-}
-
 // Oda modeli
 model Room {
   id               String              @id @default(uuid())
   number           String              @unique
-  type             RoomType
-  status           RoomStatus          @default(AVAILABLE)
+  type             String
+  status           String              @default("AVAILABLE")
   floor            Int
-  cleaningStatus   CleaningStatus      @default(CLEAN)
+  cleaningStatus   String              @default("CLEAN")
   lastCleaned      DateTime?
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
@@ -46,43 +40,14 @@ model Room {
   statusEvents     RoomStatusHistory[]
 }
 
-enum RoomType {
-  SINGLE
-  DOUBLE
-  SUITE
-  DELUXE
-}
-
-enum RoomStatus {
-  AVAILABLE
-  OCCUPIED
-  MAINTENANCE
-  OUT_OF_SERVICE
-}
-
-enum CleaningStatus {
-  CLEAN
-  DIRTY
-  CLEANING_IN_PROGRESS
-  NEEDS_INSPECTION
-}
-
 // Merkezi oda durum geçmişi (occupied, dirty, cleaning, clean, empty)
 model RoomStatusHistory {
   id         String      @id @default(uuid())
   roomNumber String
-  status     StatusEvent
-  meta       Json?
+  status     String
+  meta       String?
   changedAt  DateTime    @default(now())
   room       Room?       @relation(fields: [roomNumber], references: [number])
-}
-
-enum StatusEvent {
-  occupied
-  dirty
-  cleaning
-  clean
-  empty
 }
 
 // Misafir modeli
@@ -107,7 +72,7 @@ model Booking {
   guestId        String
   checkIn        DateTime
   checkOut       DateTime
-  status         BookingStatus @default(CONFIRMED)
+  status         String        @default("CONFIRMED")
   cleaningOptOut Boolean       @default(false)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
@@ -115,20 +80,13 @@ model Booking {
   guest          Guest         @relation(fields: [guestId], references: [id])
 }
 
-enum BookingStatus {
-  CONFIRMED
-  CHECKED_IN
-  CHECKED_OUT
-  CANCELLED
-}
-
 // Housekeeping görev modeli
 model HousekeepingTask {
   id           String       @id @default(uuid())
   roomId       String
   assignedToId String?
-  status       TaskStatus   @default(PENDING)
-  priority     TaskPriority @default(MEDIUM)
+  status       String       @default("PENDING")
+  priority     String       @default("MEDIUM")
   description  String?
   startTime    DateTime?
   endTime      DateTime?
@@ -143,8 +101,8 @@ model HousekeepingTask {
 model MaintenanceTask {
   id          String       @id @default(uuid())
   roomId      String
-  status      TaskStatus   @default(PENDING)
-  priority    TaskPriority @default(MEDIUM)
+  status      String       @default("PENDING")
+  priority    String       @default("MEDIUM")
   description String
   reportedBy  String?
   resolvedAt  DateTime?
@@ -153,46 +111,16 @@ model MaintenanceTask {
   room        Room         @relation(fields: [roomId], references: [id])
 }
 
-enum TaskStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
-}
-
-enum TaskPriority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
-}
-
 // Misafir geri bildirimi modeli
 model Feedback {
   id        String           @id @default(uuid())
   guestId   String
-  category  FeedbackCategory
+  category  String
   rating    Int? // 1-5 arası puanlama
   comment   String?
-  sentiment SentimentType?
+  sentiment String?
   createdAt DateTime         @default(now())
   guest     Guest            @relation(fields: [guestId], references: [id])
-}
-
-enum FeedbackCategory {
-  CLEANLINESS
-  COMFORT
-  STAFF
-  FACILITIES
-  LOCATION
-  VALUE
-  OVERALL
-}
-
-enum SentimentType {
-  POSITIVE
-  NEUTRAL
-  NEGATIVE
 }
 
 // Sohbet mesajı modeli
@@ -217,36 +145,19 @@ model Notification {
   userId    String
   title     String
   message   String
-  type      NotificationType
+  type      String
   isRead    Boolean          @default(false)
   createdAt DateTime         @default(now())
   user      User             @relation(fields: [userId], references: [id])
 }
 
-enum NotificationType {
-  TASK_ASSIGNED
-  TASK_COMPLETED
-  MAINTENANCE_REQUIRED
-  GUEST_REQUEST
-  GUEST_COMPLAINT
-  CHECKOUT_REMINDER
-  SYSTEM
-}
-
 // Sürdürülebilirlik metrikleri modeli
 model SustainabilityMetric {
   id          String     @id @default(uuid())
-  metricType  MetricType
+  metricType  String
   value       Float
   unit        String
   date        DateTime
   description String?
   createdAt   DateTime   @default(now())
-}
-
-enum MetricType {
-  WATER_SAVED
-  ENERGY_SAVED
-  CO2_REDUCED
-  CLEANING_PRODUCTS_SAVED
 }

@@ -15,7 +15,14 @@ dotenv.config();
 
 const PORT = Number(process.env.PORT || process.env.BACKEND_PORT || 4000);
 const ORIGIN = process.env.CORS_ORIGIN || process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
-const prisma = PrismaClient ? new PrismaClient() : null;
+let prisma: any = null;
+if (PrismaClient) {
+  try {
+    prisma = new PrismaClient();
+  } catch {
+    prisma = null;
+  }
+}
 
 const app = express();
 app.use(express.json());
@@ -91,7 +98,7 @@ io.on('connection', (socket) => {
   socket.emit('ready', { ok: true });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   // eslint-disable-next-line no-console
   console.log(`Backend listening on http://localhost:${PORT}`);
 });

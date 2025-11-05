@@ -50,7 +50,7 @@ export class RoomStatusController {
           data: {
             roomNumber,
             status,
-            meta,
+            meta: meta ? JSON.stringify(meta) : undefined,
           },
         });
       } catch (e) {
