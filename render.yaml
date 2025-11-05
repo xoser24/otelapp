@@ -1,10 +1,10 @@
 databases:
-  - name: kent-otel-db
+  - name: kent-otel-db-auto
     plan: free
 
 services:
   - type: web
-    name: kent-otel-backend
+    name: kent-otel-backend-auto
     env: node
     rootDir: server
     plan: free
@@ -16,12 +16,12 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        fromDatabase: kent-otel-db
+        fromDatabase: kent-otel-db-auto
       - key: CORS_ORIGIN
         fromSecret: CORS_ORIGIN
 
 staticSites:
-  - name: otel-yonetim-frontend
+  - name: otel-yonetim-frontend-auto
     rootDir: .
     plan: free
     autoDeploy: true
