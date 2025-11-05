@@ -14,6 +14,8 @@ services:
         fromDatabase:
           name: kent-otel-db
           property: connectionString
+      - key: NPM_CONFIG_PRODUCTION
+        value: false
       - key: PRISMA_GENERATE
         value: enabled
       - key: NODE_VERSION
