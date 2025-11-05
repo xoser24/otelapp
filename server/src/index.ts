@@ -32,6 +32,11 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: ORIGIN } });
 const controller = new RoomStatusController(io);
 
+// Root route for quick service check
+app.get('/', (_req, res) => {
+  res.json({ ok: true, service: 'kent-otel-backend', health: '/health' });
+});
+
 // Health with DB ping
 app.get('/health', async (_req, res) => {
   let dbOk = false;
