@@ -1,13 +1,12 @@
 services:
   - type: web
     name: kent-otel-backend-auto
-    env: node
+    runtime: node
     rootDir: server
     plan: free
     autoDeploy: true
     healthCheckPath: /health
-    buildCommand: npm ci && npm run prisma:generate && npm run build
-    preDeployCommand: npx prisma db push --schema ./prisma/schema.prisma
+    buildCommand: npm ci && npm run prisma:generate && npm run build && npx prisma db push --schema ./prisma/schema.prisma
     startCommand: npm run start
     envVars:
       - key: DATABASE_URL
