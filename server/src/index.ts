@@ -14,7 +14,11 @@ import { RoomStatusController } from './controllers/RoomStatusController';
 dotenv.config();
 
 const PORT = Number(process.env.PORT || process.env.BACKEND_PORT || 4000);
-const ORIGIN = process.env.CORS_ORIGIN || process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
+// Support multiple origins via comma-separated list
+const ORIGINS = (process.env.CORS_ORIGIN || process.env.FRONTEND_ORIGIN || 'http://localhost:3000')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 let prisma: any = null;
 if (PrismaClient) {
   try {
@@ -26,10 +30,10 @@ if (PrismaClient) {
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: ORIGIN, credentials: true }));
+app.use(cors({ origin: ORIGINS, credentials: true }));
 
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: ORIGIN } });
+const io = new Server(server, { cors: { origin: ORIGINS } });
 const controller = new RoomStatusController(io);
 
 // Root route for quick service check
@@ -49,7 +53,7 @@ app.get('/health', async (_req, res) => {
   } catch (e: any) {
     error = e?.message || String(e);
   }
-  res.json({ ok: true, env: { db: !!process.env.DATABASE_URL, origin: ORIGIN }, db: { ok: dbOk, error } });
+  res.json({ ok: true, env: { db: !!process.env.DATABASE_URL, origins: ORIGINS }, db: { ok: dbOk, error } });
 });
 
 // Check-in: set occupied and emit event
