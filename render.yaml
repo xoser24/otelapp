@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: kent-otel-backend
+    env: node
+    rootDir: server
+    plan: free
+    buildCommand: npm ci && npm run prisma:generate && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+staticSites:
+  - name: otel-yonetim-frontend
+    rootDir: .
+    plan: free
+    buildCommand: npm ci && npm run build
+    publishPath: build
