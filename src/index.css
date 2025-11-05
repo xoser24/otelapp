@@ -284,3 +284,16 @@ code {
 .badge-yellow { background-color: #ca8a04; color: #ffffff; }
 .badge-green { background-color: #16a34a; color: #ffffff; }
 .badge-red { background-color: #dc2626; color: #ffffff; }
+
+/* --- Mobile Safe Area & Overflow Helpers --- */
+:root {
+  /* Safe-area variables for iOS/Android cutouts */
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+.pt-safe { padding-top: var(--safe-top); }
+.pb-safe { padding-bottom: var(--safe-bottom); }
+.safe-bottom { height: var(--safe-bottom); }
+
+/* Prevent horizontal overflow on small screens */
+body { overflow-x: hidden; }

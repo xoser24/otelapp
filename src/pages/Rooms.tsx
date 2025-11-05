@@ -4,6 +4,10 @@ import RoomCardMinimal from '../components/RoomCardMinimal';
 import { GoldGlassCard } from '../components/GoldGlassCard';
 import { emitRoomsUpdated, onRoomsUpdated } from '../utils/events';
 import { ROOMS_KEY } from '../utils/reservations';
+import { ensureSocketConnected } from '../utils/socket';
+import { getPlatformMode } from '../utils/platform';
+import RoomCardMobile from '../components/RoomCardMobile';
+import MobileAppShell from '../components/MobileAppShell';
 
 
 const roomNumbers = [
@@ -93,6 +97,13 @@ const Rooms: React.FC = () => {
       unsubRooms?.();
     };
   }, []);
+
+  // Socket.io: backend'den roomStatusChanged olaylarını dinlemek için bağlantıyı başlat
+  useEffect(() => {
+    try { ensureSocketConnected(); } catch {}
+  }, []);
+
+  const platform = useMemo(() => getPlatformMode(), []);
 
   const updateRoom = useCallback((updated: RoomData) => {
     setRooms((prev) => prev.map((r) => (r.number === updated.number ? updated : r)));
@@ -185,20 +196,30 @@ const Rooms: React.FC = () => {
       </GoldGlassCard>
 
       {/* Room Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {rooms.map((room) => (
-          <GoldGlassCard key={room.number} accent={(room.status === 'dirty') ? 'emerald' : (room.status === 'reserved') ? 'royal' : (room.status === 'occupied' || room.status === 'sold' || room.status === 'changing') ? 'gold' : 'neutral'} className="gold-card-hover">
-            <div className="p-2">
-              <RoomCardMinimal
-                room={room}
-                onChange={updateRoom}
-                availableRoomNumbers={rooms.map((r) => r.number)}
-                onSwitchRoom={switchRoom}
-              />
-            </div>
-          </GoldGlassCard>
-        ))}
-      </div>
+      {platform === 'mobile' ? (
+        <MobileAppShell>
+          <div className="grid grid-cols-1 gap-4">
+            {rooms.map((room) => (
+              <RoomCardMobile key={room.number} room={room} onChange={updateRoom} />
+            ))}
+          </div>
+        </MobileAppShell>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {rooms.map((room) => (
+            <GoldGlassCard key={room.number} accent={(room.status === 'dirty') ? 'emerald' : (room.status === 'reserved') ? 'royal' : (room.status === 'occupied' || room.status === 'sold' || room.status === 'changing') ? 'gold' : 'neutral'} className="gold-card-hover">
+              <div className="p-2">
+                <RoomCardMinimal
+                  room={room}
+                  onChange={updateRoom}
+                  availableRoomNumbers={rooms.map((r) => r.number)}
+                  onSwitchRoom={switchRoom}
+                />
+              </div>
+            </GoldGlassCard>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

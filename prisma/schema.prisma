@@ -43,6 +43,7 @@ model Room {
   bookings        Booking[]
   cleaningTasks   HousekeepingTask[]
   maintenanceTasks MaintenanceTask[]
+  statusEvents    RoomStatusHistory[]
 }
 
 enum RoomType {
@@ -64,6 +65,24 @@ enum CleaningStatus {
   DIRTY
   CLEANING_IN_PROGRESS
   NEEDS_INSPECTION
+}
+
+// Merkezi oda durum geçmişi (occupied, dirty, cleaning, clean, empty)
+model RoomStatusHistory {
+  id          String   @id @default(uuid())
+  roomNumber  String
+  status      StatusEvent
+  meta        Json?
+  changedAt   DateTime @default(now())
+  room        Room?    @relation(fields: [roomNumber], references: [number])
+}
+
+enum StatusEvent {
+  occupied
+  dirty
+  cleaning
+  clean
+  empty
 }
 
 // Misafir modeli

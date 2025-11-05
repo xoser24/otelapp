@@ -35,3 +35,32 @@ npm start
 - **Veritabanı**: PostgreSQL
 - **Gerçek Zamanlı İletişim**: WebSocket / Socket.io
 - **AI Analiz**: Python FastAPI mikroservis
+
+## Deploy (CI/CD)
+
+- **Frontend (Vercel)**
+  - `REACT_APP_SOCKET_URL` ortam değişkenini Render’daki backend URL’sine yönlendirin.
+  - Vercel üzerinde yeni proje oluşturun ve GitHub repo’yu bağlayın.
+  - Build komutu: `npm run build`, Output: `build`
+  - Tek tık deploy için Vercel UI üzerinden import edip environment’ı tanımlayın.
+
+- **Backend (Render)**
+  - Render’da `Web Service` oluşturun, root: `server/`.
+  - Start komutu: `npm run start`, Build komutu: `npm run build`.
+  - Ortam değişkenleri: `DATABASE_URL`, `PORT` (4000), `CORS_ORIGIN` (Vercel domaini).
+  - Sağlanan endpointler: `POST /api/rooms/:id/checkin`, `POST /api/rooms/:id/checkout`, `POST /api/rooms/:id/cleaning/start`, `POST /api/rooms/:id/cleaning/finish`.
+
+## Ortam Değişkenleri
+
+Bkz: `.env.example`
+
+## E2E Senaryolar (Basit)
+
+- Check-in → Housekeeping gerçek zamanlı “Dolu” görsün.
+- Check-out → Housekeeping “Kirli” görsün.
+- HK temizlik başlat/bitir → Resepsiyon “Temizleniyor/Temiz” görsün.
+
+## Geliştirici Notları
+
+- Merkezi `RoomStatusController` socket ile `roomStatusChanged` yayınlar.
+- Frontend Rooms sayfası socket dinleyiciyi başlatır ve local depoyu günceller.
