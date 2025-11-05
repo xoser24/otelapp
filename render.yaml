@@ -20,7 +20,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: CORS_ORIGIN
-        value: https://xoser24.github.io/otelapp,https://otel-yonetim-frontend-auto.onrender.com
+        value: https://xoser24.github.io/otelapp,https://otel-yonetim-frontend-auto-ivsh.onrender.com
 
   - type: web
     name: otel-yonetim-frontend-auto
