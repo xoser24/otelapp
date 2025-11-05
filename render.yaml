@@ -16,7 +16,7 @@ services:
       - key: CORS_ORIGIN
         value: https://xoser24.github.io/otelapp
 
-staticSites:
+static_sites:
   - name: otel-yonetim-frontend-auto
     rootDir: .
     plan: free
