@@ -18,7 +18,7 @@ services:
       - key: DATABASE_URL
         fromDatabase: kent-otel-db-auto
       - key: CORS_ORIGIN
-        fromSecret: CORS_ORIGIN
+        value: https://xoser24.github.io/otelapp
 
 staticSites:
   - name: otel-yonetim-frontend-auto
@@ -29,4 +29,4 @@ staticSites:
     publishPath: build
     envVars:
       - key: REACT_APP_SOCKET_URL
-        fromSecret: REACT_APP_SOCKET_URL
+        value: https://kent-otel-backend-auto.onrender.com
