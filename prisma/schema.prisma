@@ -12,13 +12,13 @@ datasource db {
 
 // Kullanıcı modeli (personel, yönetici)
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
+  id            String             @id @default(uuid())
+  email         String             @unique
   password      String
   name          String
   role          UserRole
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
   notifications Notification[]
   tasks         HousekeepingTask[]
 }
@@ -31,19 +31,19 @@ enum UserRole {
 
 // Oda modeli
 model Room {
-  id              String    @id @default(uuid())
-  number          String    @unique
-  type            RoomType
-  status          RoomStatus @default(AVAILABLE)
-  floor           Int
-  cleaningStatus  CleaningStatus @default(CLEAN)
-  lastCleaned     DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  bookings        Booking[]
-  cleaningTasks   HousekeepingTask[]
+  id               String              @id @default(uuid())
+  number           String              @unique
+  type             RoomType
+  status           RoomStatus          @default(AVAILABLE)
+  floor            Int
+  cleaningStatus   CleaningStatus      @default(CLEAN)
+  lastCleaned      DateTime?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  bookings         Booking[]
+  cleaningTasks    HousekeepingTask[]
   maintenanceTasks MaintenanceTask[]
-  statusEvents    RoomStatusHistory[]
+  statusEvents     RoomStatusHistory[]
 }
 
 enum RoomType {
@@ -69,12 +69,12 @@ enum CleaningStatus {
 
 // Merkezi oda durum geçmişi (occupied, dirty, cleaning, clean, empty)
 model RoomStatusHistory {
-  id          String   @id @default(uuid())
-  roomNumber  String
-  status      StatusEvent
-  meta        Json?
-  changedAt   DateTime @default(now())
-  room        Room?    @relation(fields: [roomNumber], references: [number])
+  id         String      @id @default(uuid())
+  roomNumber String
+  status     StatusEvent
+  meta       Json?
+  changedAt  DateTime    @default(now())
+  room       Room?       @relation(fields: [roomNumber], references: [number])
 }
 
 enum StatusEvent {
@@ -87,32 +87,32 @@ enum StatusEvent {
 
 // Misafir modeli
 model Guest {
-  id            String    @id @default(uuid())
-  name          String
-  email         String?
-  phone         String?
-  nationality   String?
-  language      String?   @default("tr")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  bookings      Booking[]
-  feedbacks     Feedback[]
-  chatMessages  ChatMessage[]
+  id           String        @id @default(uuid())
+  name         String
+  email        String?
+  phone        String?
+  nationality  String?
+  language     String?       @default("tr")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  bookings     Booking[]
+  feedbacks    Feedback[]
+  chatMessages ChatMessage[]
 }
 
 // Rezervasyon modeli
 model Booking {
-  id            String    @id @default(uuid())
-  roomId        String
-  guestId       String
-  checkIn       DateTime
-  checkOut      DateTime
-  status        BookingStatus @default(CONFIRMED)
-  cleaningOptOut Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  room          Room      @relation(fields: [roomId], references: [id])
-  guest         Guest     @relation(fields: [guestId], references: [id])
+  id             String        @id @default(uuid())
+  roomId         String
+  guestId        String
+  checkIn        DateTime
+  checkOut       DateTime
+  status         BookingStatus @default(CONFIRMED)
+  cleaningOptOut Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  room           Room          @relation(fields: [roomId], references: [id])
+  guest          Guest         @relation(fields: [guestId], references: [id])
 }
 
 enum BookingStatus {
@@ -124,33 +124,33 @@ enum BookingStatus {
 
 // Housekeeping görev modeli
 model HousekeepingTask {
-  id            String    @id @default(uuid())
-  roomId        String
-  assignedToId  String?
-  status        TaskStatus @default(PENDING)
-  priority      TaskPriority @default(MEDIUM)
-  description   String?
-  startTime     DateTime?
-  endTime       DateTime?
-  duration      Int?      // Dakika cinsinden süre
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  room          Room      @relation(fields: [roomId], references: [id])
-  assignedTo    User?     @relation(fields: [assignedToId], references: [id])
+  id           String       @id @default(uuid())
+  roomId       String
+  assignedToId String?
+  status       TaskStatus   @default(PENDING)
+  priority     TaskPriority @default(MEDIUM)
+  description  String?
+  startTime    DateTime?
+  endTime      DateTime?
+  duration     Int? // Dakika cinsinden süre
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  room         Room         @relation(fields: [roomId], references: [id])
+  assignedTo   User?        @relation(fields: [assignedToId], references: [id])
 }
 
 // Bakım görev modeli
 model MaintenanceTask {
-  id            String    @id @default(uuid())
-  roomId        String
-  status        TaskStatus @default(PENDING)
-  priority      TaskPriority @default(MEDIUM)
-  description   String
-  reportedBy    String?
-  resolvedAt    DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  room          Room      @relation(fields: [roomId], references: [id])
+  id          String       @id @default(uuid())
+  roomId      String
+  status      TaskStatus   @default(PENDING)
+  priority    TaskPriority @default(MEDIUM)
+  description String
+  reportedBy  String?
+  resolvedAt  DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  room        Room         @relation(fields: [roomId], references: [id])
 }
 
 enum TaskStatus {
@@ -169,14 +169,14 @@ enum TaskPriority {
 
 // Misafir geri bildirimi modeli
 model Feedback {
-  id            String    @id @default(uuid())
-  guestId       String
-  category      FeedbackCategory
-  rating        Int?      // 1-5 arası puanlama
-  comment       String?
-  sentiment     SentimentType?
-  createdAt     DateTime  @default(now())
-  guest         Guest     @relation(fields: [guestId], references: [id])
+  id        String           @id @default(uuid())
+  guestId   String
+  category  FeedbackCategory
+  rating    Int? // 1-5 arası puanlama
+  comment   String?
+  sentiment SentimentType?
+  createdAt DateTime         @default(now())
+  guest     Guest            @relation(fields: [guestId], references: [id])
 }
 
 enum FeedbackCategory {
@@ -197,30 +197,30 @@ enum SentimentType {
 
 // Sohbet mesajı modeli
 model ChatMessage {
-  id            String    @id @default(uuid())
-  guestId       String?
-  userId        String?
-  content       String
-  isFromGuest   Boolean
-  isTranslated  Boolean   @default(false)
-  originalContent String?
-  originalLanguage String?
+  id                 String   @id @default(uuid())
+  guestId            String?
+  userId             String?
+  content            String
+  isFromGuest        Boolean
+  isTranslated       Boolean  @default(false)
+  originalContent    String?
+  originalLanguage   String?
   translatedLanguage String?
-  isRead        Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  guest         Guest?    @relation(fields: [guestId], references: [id])
+  isRead             Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  guest              Guest?   @relation(fields: [guestId], references: [id])
 }
 
 // Bildirim modeli
 model Notification {
-  id            String    @id @default(uuid())
-  userId        String
-  title         String
-  message       String
-  type          NotificationType
-  isRead        Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  user          User      @relation(fields: [userId], references: [id])
+  id        String           @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id])
 }
 
 enum NotificationType {
@@ -235,13 +235,13 @@ enum NotificationType {
 
 // Sürdürülebilirlik metrikleri modeli
 model SustainabilityMetric {
-  id            String    @id @default(uuid())
-  metricType    MetricType
-  value         Float
-  unit          String
-  date          DateTime
-  description   String?
-  createdAt     DateTime  @default(now())
+  id          String     @id @default(uuid())
+  metricType  MetricType
+  value       Float
+  unit        String
+  date        DateTime
+  description String?
+  createdAt   DateTime   @default(now())
 }
 
 enum MetricType {

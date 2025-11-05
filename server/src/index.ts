@@ -3,14 +3,19 @@ import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { Server } from 'socket.io';
-import { PrismaClient } from '@prisma/client';
+// Prisma opsiyonel: client generate edilmemişse backend yine ayağa kalksın
+let PrismaClient: any = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  PrismaClient = require('@prisma/client').PrismaClient;
+} catch {}
 import { RoomStatusController } from './controllers/RoomStatusController';
 
 dotenv.config();
 
 const PORT = Number(process.env.PORT || process.env.BACKEND_PORT || 4000);
 const ORIGIN = process.env.CORS_ORIGIN || process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
-const prisma = new PrismaClient();
+const prisma = PrismaClient ? new PrismaClient() : null;
 
 const app = express();
 app.use(express.json());
@@ -25,8 +30,10 @@ app.get('/health', async (_req, res) => {
   let dbOk = false;
   let error: string | null = null;
   try {
-    await prisma.$queryRaw`SELECT 1`;
-    dbOk = true;
+    if (prisma) {
+      await prisma.$queryRaw`SELECT 1`;
+      dbOk = true;
+    }
   } catch (e: any) {
     error = e?.message || String(e);
   }

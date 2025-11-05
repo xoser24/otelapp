@@ -61,7 +61,7 @@ jobs:
           fi
           curl -X POST "$RENDER_DEPLOY_HOOK_URL"
         env:
-          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL || vars.RENDER_DEPLOY_HOOK_URL }}
 
   deploy_vercel:
     name: Deploy to Vercel
@@ -74,7 +74,7 @@ jobs:
         uses: amondnet/vercel-action@v25
         with:
           working-directory: .
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN || vars.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID || vars.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID || vars.VERCEL_PROJECT_ID }}
           prod: true

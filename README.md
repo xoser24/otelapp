@@ -60,6 +60,28 @@ npm start
 - Render tarafında blueprint `render.yaml` build sırasında `prisma db push` çalıştırır; Neon Postgres şeması güncellenir.
 - Vercel tarafında `vercel.json` ile SPA yönlendirme etkin; build çıktısı `build` klasörü.
 
+#### Hızlı Kurulum: GitHub Secrets/Variables
+- Yerel PowerShell ile tek komutta ekleyebilirsiniz:
+
+```
+pwsh scripts/setup-github-secrets.ps1 \
+  -Repo xoser24/otelapp \
+  -RenderDeployHookUrl "https://render.com/deploy/xxxxxxxx" \
+  -VercelToken "vercel_token" \
+  -VercelOrgId "org_xxx" \
+  -VercelProjectId "prj_xxx"
+```
+
+- Eğer secrets yerine repository variables kullanmak isterseniz (UI’den de eklenebilir):
+
+```
+pwsh scripts/setup-github-secrets.ps1 -Repo xoser24/otelapp -UseRepoVariables \
+  -RenderDeployHookUrl "https://render.com/deploy/xxxxxxxx" \
+  -VercelToken "vercel_token" -VercelOrgId "org_xxx" -VercelProjectId "prj_xxx"
+```
+
+- Not: CI workflow, secrets tanımlı değilse repository variables’a otomatik olarak fallback eder.
+
 ## Ortam Değişkenleri
 
 Bkz: `.env.example`
