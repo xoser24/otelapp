@@ -33,6 +33,6 @@ services:
       - key: NODE_VERSION
         value: 18.18.0
       - key: REACT_APP_SOCKET_URL
-        value: https://kent-otel-backend-auto.onrender.com
+        sync: false
 
 # Note: Database creation removed to avoid free-tier limit.
