@@ -6,9 +6,13 @@ services:
     plan: free
     autoDeploy: true
     healthCheckPath: /health
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci && npm run prisma:generate && npm run build
     startCommand: npm run start
     envVars:
+      - key: DATABASE_URL
+        value: postgresql://postgres:Postgres!2025-KentOtel@88.254.239.28:5432/kentotel
+      - key: PRISMA_GENERATE
+        value: enabled
       - key: NODE_VERSION
         value: 18.18.0
       - key: NODE_ENV
