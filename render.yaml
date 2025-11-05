@@ -1,3 +1,7 @@
+databases:
+  - name: kent-otel-db
+    plan: free
+
 services:
   - type: web
     name: kent-otel-backend
@@ -10,9 +14,9 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        fromSecret: DATABASE_URL
+        fromDatabase: kent-otel-db
       - key: CORS_ORIGIN
-        value: https://your-vercel-project.vercel.app
+        fromSecret: CORS_ORIGIN
 
 staticSites:
   - name: otel-yonetim-frontend
@@ -20,3 +24,6 @@ staticSites:
     plan: free
     buildCommand: npm ci && npm run build
     publishPath: build
+    envVars:
+      - key: REACT_APP_SOCKET_URL
+        fromSecret: REACT_APP_SOCKET_URL
