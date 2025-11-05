@@ -32,7 +32,7 @@ services:
     plan: free
     autoDeploy: true
     buildCommand: npm ci && npm run build
-    publishPath: build
+    staticPublishPath: build
     envVars:
       - key: NODE_VERSION
         value: 18.18.0
