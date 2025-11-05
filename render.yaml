@@ -28,7 +28,6 @@ services:
     name: otel-yonetim-frontend-auto
     runtime: static
     rootDir: .
-    plan: free
     autoDeploy: true
     buildCommand: npm ci && npm run build
     staticPublishPath: build
